@@ -115,6 +115,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\complex.cpp" />
+    <ClCompile Include="src\DFT.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\wav.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\complex.h" />
+    <ClInclude Include="src\csv.h" />
+    <ClInclude Include="src\DFT.h" />
+    <ClInclude Include="src\wav.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
