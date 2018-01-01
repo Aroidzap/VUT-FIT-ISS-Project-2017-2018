@@ -1,7 +1,7 @@
 #include "DFT.h"
 #include "constants.h"
 
-std::vector<complex> DFT(std::vector<float> x)
+std::vector<complex> DFT(std::vector<double> x)
 {
 	std::vector<complex> X;
 	unsigned int N = static_cast<unsigned int>(x.size());
@@ -9,7 +9,7 @@ std::vector<complex> DFT(std::vector<float> x)
 	for (unsigned int k = 0; k < K; k++) {
 		complex sum(0, 0);
 		for (unsigned int n = 0; n < N; n++) {
-			sum = sum + x[n] * e_to_j(-2.0f*PI*static_cast<float>(k*n)/static_cast<float>(N));
+			sum = sum + x[n] * e_to_j(-2.0f*PI*static_cast<double>(k*n)/static_cast<double>(N));
 		}
 		X.push_back(sum);
 	}

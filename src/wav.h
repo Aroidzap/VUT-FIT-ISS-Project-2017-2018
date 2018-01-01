@@ -22,15 +22,15 @@ class WAV {
 private:
 	WAVHeader header;
 	unsigned int samples;
-	std::vector<float> data;
+	std::vector<double> data;
 public:
 	WAV();
-	WAV(const std::vector<float> & data);
-	WAV(const std::vector<float> & data, const WAVHeader & header);
+	WAV(const std::vector<double> & data);
+	WAV(const std::vector<double> & data, const WAVHeader & header);
 	const WAVHeader & GetHeader() const;
 	bool Load(const std::string filename);
 	bool Save(const std::string filename);
-	operator std::vector<float>() const { return this->data; }
-	float SamplingFrequency();
+	operator std::vector<double>() const { return this->data; }
+	double SamplingFrequency();
 	int Samples();
 };

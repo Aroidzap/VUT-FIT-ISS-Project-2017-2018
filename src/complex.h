@@ -3,35 +3,35 @@
 
 class complex {
 private:
-	float re, im;
+	double re, im;
 public:
-	float modulus();
-	float arg();
+	double modulus();
+	double arg();
 	complex();
-	complex(float re);
-	complex(float re, float im);
+	complex(double re);
+	complex(double re, double im);
 
 	friend complex operator+(const complex & a, const complex & b);
 	friend complex operator-(const complex & a, const complex & b);
 	friend complex operator*(const complex & a, const complex & b);
 	friend complex operator/(const complex & a, const complex & b);
 	
-	friend complex operator+(const complex & a, const float & b);
-	friend complex operator-(const complex & a, const float & b);
-	friend complex operator*(const complex & a, const float & b);
-	friend complex operator/(const complex & a, const float & b);
+	friend complex operator+(const complex & a, const double & b);
+	friend complex operator-(const complex & a, const double & b);
+	friend complex operator*(const complex & a, const double & b);
+	friend complex operator/(const complex & a, const double & b);
 
-	friend complex operator+(const float & a, const complex & b);
-	friend complex operator-(const float & a, const complex & b);
-	friend complex operator*(const float & a, const complex & b);
-	friend complex operator/(const float & a, const complex & b);
+	friend complex operator+(const double & a, const complex & b);
+	friend complex operator-(const double & a, const complex & b);
+	friend complex operator*(const double & a, const complex & b);
+	friend complex operator/(const double & a, const complex & b);
 
-	friend float Re(complex c);
-	friend float Im(complex c);
+	friend double Re(complex c);
+	friend double Im(complex c);
 };
 
-std::vector<float> Re(std::vector<complex> c);
-std::vector<float> Im(std::vector<complex> c);
+std::vector<double> Re(std::vector<complex> c);
+std::vector<double> Im(std::vector<complex> c);
 
-complex complex_sqrt(float re);
-complex e_to_j(float re);
+complex complex_sqrt(double re);
+complex e_to_j(double re);

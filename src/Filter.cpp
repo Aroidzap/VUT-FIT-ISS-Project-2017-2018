@@ -1,18 +1,18 @@
 #include "Filter.h"
 
-Filter::Filter(std::vector<float> b0_to_n) : b_coef(b0_to_n), a_coef() {}
-Filter::Filter(std::vector<float> b0_to_n, std::vector<float> a1_to_n) : b_coef(b0_to_n), a_coef(a1_to_n) {}
+Filter::Filter(std::vector<double> b0_to_n) : b_coef(b0_to_n), a_coef() {}
+Filter::Filter(std::vector<double> b0_to_n, std::vector<double> a1_to_n) : b_coef(b0_to_n), a_coef(a1_to_n) {}
 
-std::vector<float> Filter::Convolve(std::vector<float> signal)
+std::vector<double> Filter::Convolve(std::vector<double> signal)
 {
-	std::vector<float> output;
+	std::vector<double> output;
 	output.resize(signal.size());
 	int signal_size = static_cast<int>(signal.size());
 	int b_coef_size = static_cast<int>(b_coef.size());
 	int a_coef_size = static_cast<int>(a_coef.size());
 
 	for (int i = 0; i < signal_size; i++) {
-		float sum = 0.0f;
+		double sum = 0.0f;
 		for (int n = b_coef_size - 1; n >= 0; n--) {
 			int idx = i - n;
 			if (idx >= 0) {

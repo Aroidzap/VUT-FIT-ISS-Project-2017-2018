@@ -3,9 +3,9 @@
 
 class Filter {
 private:
-	std::vector<float> b_coef, a_coef;
+	std::vector<double> b_coef, a_coef;
 public:
-	Filter(std::vector<float> b0_to_n);
-	Filter(std::vector<float> b0_to_n, std::vector<float> a1_to_n);
-	std::vector<float> Convolve(std::vector<float> signal);
+	Filter(std::vector<double> b0_to_n);
+	Filter(std::vector<double> b0_to_n, std::vector<double> a1_to_n);
+	std::vector<double> Convolve(std::vector<double> signal);
 };

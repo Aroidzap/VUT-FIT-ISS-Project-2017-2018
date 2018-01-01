@@ -1,7 +1,7 @@
 #include "DTF.h"
 #include <math.h>
 
-DTF::DTF(float b0, float b1, float b2, float a1, float a2) : b0(b0), b1(b1), b2(b2), a1(a1), a2(a2)
+DTF::DTF(double b0, double b1, double b2, double a1, double a2) : b0(b0), b1(b1), b2(b2), a1(a1), a2(a2)
 {
 	ComputeZeroesPoles();
 }
@@ -18,10 +18,10 @@ void DTF::ComputeZeroesPoles()
 
 complex DTF::operator()(complex e_to_jomega)
 {
-	float modulus = b0 * (e_to_jomega - n0).modulus() * (e_to_jomega - n1).modulus();
+	double modulus = b0 * (e_to_jomega - n0).modulus() * (e_to_jomega - n1).modulus();
 	modulus = modulus / ((e_to_jomega - p0).modulus() * (e_to_jomega - p1).modulus());
-	float arg = (e_to_jomega - n0).arg() + (e_to_jomega - n1).arg() - (e_to_jomega - p0).arg() - (e_to_jomega - p1).arg();
-	return complex(modulus * cosf(arg), modulus * sinf(arg));
+	double arg = (e_to_jomega - n0).arg() + (e_to_jomega - n1).arg() - (e_to_jomega - p0).arg() - (e_to_jomega - p1).arg();
+	return complex(modulus * cos(arg), modulus * sin(arg));
 }
 
 void DTF::GetZeroesPoles(complex & n0, complex & n1, complex & p0, complex & p1)

@@ -3,11 +3,11 @@
 #include <iostream>
 
 WAV::WAV() : header{ { 'R','I','F','F' }, 36, { 'W','A','V','E' }, { 'f','m','t',' ' }, 16, 1, 1, 16000, 32000, 2, 16, { 'd','a','t','a' }, 0 } {}
-WAV::WAV(const std::vector<float> & data) : data(data), header{ { 'R','I','F','F' }, 36,{ 'W','A','V','E' },{ 'f','m','t',' ' }, 16, 1, 1, 16000, 32000, 2, 16,{ 'd','a','t','a' }, 0 } {
+WAV::WAV(const std::vector<double> & data) : data(data), header{ { 'R','I','F','F' }, 36,{ 'W','A','V','E' },{ 'f','m','t',' ' }, 16, 1, 1, 16000, 32000, 2, 16,{ 'd','a','t','a' }, 0 } {
 	this->header.sizeOfData = data.size();
 	this->header.overallSize = this->header.sizeOfData + 36;
 }
-WAV::WAV(const std::vector<float> & data, const WAVHeader & header) : data(data), header(header) {
+WAV::WAV(const std::vector<double> & data, const WAVHeader & header) : data(data), header(header) {
 	this->header.sizeOfData = data.size();
 	this->header.overallSize = this->header.sizeOfData + 36;
 }
@@ -62,7 +62,7 @@ bool WAV::Load(const std::string filename)
 
 	this->data.reserve(this->samples);
 	for (unsigned int i = 0; i < this->samples; i++) {
-		this->data.push_back(static_cast<float>(raw_data[i]) / 32768.0f);
+		this->data.push_back(static_cast<double>(raw_data[i]) / 32768.0f);
 	}
 
 	delete[] raw_data;
@@ -98,9 +98,9 @@ bool WAV::Save(const std::string filename)
 	return false;
 }
 
-float WAV::SamplingFrequency()
+double WAV::SamplingFrequency()
 {
-	return static_cast<float>(this->header.samplingFrequency);
+	return static_cast<double>(this->header.samplingFrequency);
 }
 
 int WAV::Samples() {

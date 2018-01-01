@@ -1,5 +1,5 @@
 #pragma once
 #include <vector>
 
-std::vector<float> BiasedAutoCorrelation(std::vector<float> x, int k_min, int k_max);
-std::vector<std::vector<float>> JointProbabilityDensity(std::vector<float> x1, std::vector<float> x2, int k, float div_size);
+std::vector<double> BiasedAutoCorrelation(std::vector<double> x, int k_min, int k_max);
+std::vector<std::vector<double>> JointProbabilityDensity(std::vector<double> x1, std::vector<double> x2, int k, double div_size);

@@ -2,17 +2,17 @@
 #include <math.h>
 
 complex::complex() : re(), im() {}
-complex::complex(float re) : re(re), im(0.0f) {}
-complex::complex(float re, float im) : re(re), im(im) {}
+complex::complex(double re) : re(re), im(0.0f) {}
+complex::complex(double re, double im) : re(re), im(im) {}
 
-float complex::modulus()
+double complex::modulus()
 {
-	return sqrtf(re * re + im * im);
+	return sqrt(re * re + im * im);
 }
 
-float complex::arg()
+double complex::arg()
 {
-	return atan2f(im, re);
+	return atan2(im, re);
 }
 
 
@@ -33,90 +33,90 @@ complex operator*(const complex & a, const complex & b)
 
 complex operator/(const complex & a, const complex & b)
 {
-	float r = a.re * b.re + a.im * b.im;
-	float i = a.im * b.re - a.re * b.im;
-	float d = b.re * b.re + b.im * b.im;
+	double r = a.re * b.re + a.im * b.im;
+	double i = a.im * b.re - a.re * b.im;
+	double d = b.re * b.re + b.im * b.im;
 	return complex(r / d, i / d);
 }
 
-complex operator+(const complex & a, const float & b)
+complex operator+(const complex & a, const double & b)
 {
 	return complex(a.re + b, a.im);
 }
 
-complex operator-(const complex & a, const float & b)
+complex operator-(const complex & a, const double & b)
 {
 	return complex(a.re - b, a.im);
 }
 
-complex operator*(const complex & a, const float & b)
+complex operator*(const complex & a, const double & b)
 {
 	return complex(a.re * b, a.im * b);
 }
 
-complex operator/(const complex & a, const float & b)
+complex operator/(const complex & a, const double & b)
 {
 	return complex(a.re / b, a.im / b);
 }
 
-complex operator+(const float & a, const complex & b)
+complex operator+(const double & a, const complex & b)
 {
 	return complex(a + b.re, b.im);
 }
 
-complex operator-(const float & a, const complex & b)
+complex operator-(const double & a, const complex & b)
 {
 	return complex(a - b.re, - b.im);
 }
 
-complex operator*(const float & a, const complex & b)
+complex operator*(const double & a, const complex & b)
 {
 	return complex(a * b.re, a * b.im);
 }
 
-complex operator/(const float & a, const complex & b)
+complex operator/(const double & a, const complex & b)
 {
-	float d = b.re * b.re + b.im * b.im;
+	double d = b.re * b.re + b.im * b.im;
 	return complex(a * b.re / d, a * b.im / d);
 }
 
-complex complex_sqrt(float re)
+complex complex_sqrt(double re)
 {
 	if (re >= 0) {
-		return complex(sqrtf(re), 0);
+		return complex(sqrt(re), 0);
 	}
 	else {
-		return complex(0, sqrtf(-re));
+		return complex(0, sqrt(-re));
 	}
 }
 
-complex e_to_j(float re)
+complex e_to_j(double re)
 {
-	return complex(cosf(re), sinf(re));
+	return complex(cos(re), sin(re));
 }
 
-float Re(const complex c) 
+double Re(const complex c) 
 {
 	return c.re;
 }
 
-float Im(const complex c)
+double Im(const complex c)
 {
 	return c.im;
 }
 
-std::vector<float> Re(const std::vector<complex> c)
+std::vector<double> Re(const std::vector<complex> c)
 {
-	std::vector<float> re;
+	std::vector<double> re;
 	for (auto & it : c) {
 		re.push_back(Re(it));
 	}
 	return re;
 }
 
-std::vector<float> Im(const std::vector<complex> c)
+std::vector<double> Im(const std::vector<complex> c)
 {
-	std::vector<float> im;
+	std::vector<double> im;
 	for (auto & it : c) {
 		im.push_back(Im(it));
 	}
