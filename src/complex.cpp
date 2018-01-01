@@ -80,17 +80,45 @@ complex operator/(const float & a, const complex & b)
 	return complex(a * b.re / d, a * b.im / d);
 }
 
+complex complex_sqrt(float re)
+{
+	if (re >= 0) {
+		return complex(sqrtf(re), 0);
+	}
+	else {
+		return complex(0, sqrtf(-re));
+	}
+}
+
 complex e_to_j(float re)
 {
 	return complex(cosf(re), sinf(re));
 }
 
-float Re(complex c) 
+float Re(const complex c) 
 {
 	return c.re;
 }
 
-float Im(complex c)
+float Im(const complex c)
 {
 	return c.im;
+}
+
+std::vector<float> Re(const std::vector<complex> c)
+{
+	std::vector<float> re;
+	for (auto & it : c) {
+		re.push_back(Re(it));
+	}
+	return re;
+}
+
+std::vector<float> Im(const std::vector<complex> c)
+{
+	std::vector<float> im;
+	for (auto & it : c) {
+		im.push_back(Im(it));
+	}
+	return im;
 }

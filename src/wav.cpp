@@ -5,9 +5,16 @@
 WAV::WAV() : header{ { 'R','I','F','F' }, 36, { 'W','A','V','E' }, { 'f','m','t',' ' }, 16, 1, 1, 16000, 32000, 2, 16, { 'd','a','t','a' }, 0 } {}
 WAV::WAV(const std::vector<float> & data) : data(data), header{ { 'R','I','F','F' }, 36,{ 'W','A','V','E' },{ 'f','m','t',' ' }, 16, 1, 1, 16000, 32000, 2, 16,{ 'd','a','t','a' }, 0 } {
 	this->header.sizeOfData = data.size();
-	this->header.overallSize += this->header.sizeOfData;
+	this->header.overallSize = this->header.sizeOfData + 36;
 }
-
+WAV::WAV(const std::vector<float> & data, const WAVHeader & header) : data(data), header(header) {
+	this->header.sizeOfData = data.size();
+	this->header.overallSize = this->header.sizeOfData + 36;
+}
+const WAVHeader & WAV::GetHeader() const
+{
+	return header;
+}
 bool CheckHeader(WAVHeader &h) 
 {
 	if (h.const_RIFF[0] != 'R' || h.const_WAVE[0] != 'W' ||
@@ -89,11 +96,6 @@ bool WAV::Save(const std::string filename)
 
 	delete[] raw_data;
 	return false;
-}
-
-std::vector<float>& WAV::Data()
-{
-	return this->data;
 }
 
 float WAV::SamplingFrequency()

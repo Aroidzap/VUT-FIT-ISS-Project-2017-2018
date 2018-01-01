@@ -116,14 +116,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\complex.cpp" />
+    <ClCompile Include="src\correlation.cpp" />
     <ClCompile Include="src\DFT.cpp" />
+    <ClCompile Include="src\DTF.cpp" />
+    <ClCompile Include="src\Filter.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\wav.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\complex.h" />
+    <ClInclude Include="src\constants.h" />
+    <ClInclude Include="src\correlation.h" />
     <ClInclude Include="src\csv.h" />
     <ClInclude Include="src\DFT.h" />
+    <ClInclude Include="src\DTF.h" />
+    <ClInclude Include="src\Filter.h" />
     <ClInclude Include="src\wav.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

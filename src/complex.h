@@ -1,4 +1,5 @@
 #pragma once
+#include<vector>
 
 class complex {
 private:
@@ -29,4 +30,8 @@ public:
 	friend float Im(complex c);
 };
 
+std::vector<float> Re(std::vector<complex> c);
+std::vector<float> Im(std::vector<complex> c);
+
+complex complex_sqrt(float re);
 complex e_to_j(float re);

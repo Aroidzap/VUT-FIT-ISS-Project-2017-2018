@@ -26,9 +26,11 @@ private:
 public:
 	WAV();
 	WAV(const std::vector<float> & data);
+	WAV(const std::vector<float> & data, const WAVHeader & header);
+	const WAVHeader & GetHeader() const;
 	bool Load(const std::string filename);
 	bool Save(const std::string filename);
-	std::vector<float> & Data();
+	operator std::vector<float>() const { return this->data; }
 	float SamplingFrequency();
 	int Samples();
 };
