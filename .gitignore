@@ -3,3 +3,5 @@
 [Dd]ebug/
 [Rr]elease/
 *.csv
+*.wav
+!xpazdi02.wav
