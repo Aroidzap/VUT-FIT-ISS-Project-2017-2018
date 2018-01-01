@@ -197,6 +197,22 @@ int main(int argc, char *argv[])
 
 	// Compute joint probability density function p(x1, x2, 10)
 	std::cout << "Computing joint probability density function..." << std::endl;
+	float div_size = 0.01;
+	std::vector<std::vector<float>> jpdf = JointProbabilityDensity(signal, signal, 10, div_size);
+	std::vector<float> x_axis, y_axis;
+
+	for (float val = -1.0f, int x = 0; x < jpdf.size(); x++, val += div_size) {
+		x_axis.push_back(val);	
+	}
+	if (jpdf.size() > 0) {
+		for (float val = -1.0f, int y = 0; y < jpdf[0].size(); y++, val += div_size) {
+			y_axis.push_back(val);
+		}
+	}
+
+	//const char* jpdf_file = "joint_probability_density.csv";
+	//CSV<float>({ { "x", x_axis },{ "y", y_axis },{ "p(x1, x2, 10)", jpdf } }).Save(jpdf_file);
+	//std::cout << "Auto-correlation coefficients are exported to '" << r_file << "'" << std::endl << std::endl;
 
 	return 0;
 }

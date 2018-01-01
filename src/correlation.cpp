@@ -1,4 +1,4 @@
-#include "Correlation.h"
+#include "correlation.h"
 
 std::vector<float> BiasedAutoCorrelation(std::vector<float> x, int min_shift, int max_shift)
 {
