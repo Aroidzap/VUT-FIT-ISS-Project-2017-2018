@@ -22,8 +22,8 @@ int main(int argc, char *argv[])
 	
 	// Extract information
 	std::cout << "Sampling frequency: " << signal.SamplingFrequency() << "[Hz]" << std::endl;
-	std::cout << "Length: " << static_cast<float>(signal.Samples()) / signal.SamplingFrequency() << "[s]" << std::endl;
-	std::cout << "Length: " << signal.Samples() << "[samples]" << std::endl << std::endl;
+	std::cout << "Length: " << static_cast<float>(signal.Samples()) / signal.SamplingFrequency() << "[s], ";
+	std::cout << signal.Samples() << "[samples]" << std::endl << std::endl;
 	
 	// Perform DFT
 	std::cout << "Computing DFT..." << std::endl;
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
 	// Export DFT modulus of IIR filtered signal to file
 	const char* dft_m_iir_file = "dft_modulus_iir_filtered.csv";
 	CSV<float>({ { "Sampling frequency [Hz]", freq_filtered },{ "|DFT(x[n])|", dft_modulus_filtered } }).Save(dft_m_iir_file);
-	std::cout << "DFT modulus of iir filtered signal is exported to '" << dft_m_iir_file << "'" << std::endl << std::endl;
+	std::cout << "DFT modulus of IIR filtered signal is exported to '" << dft_m_iir_file << "'" << std::endl << std::endl;
 	
 
 	// Find 20ms of 4kHz, 50% duty cycle signal
@@ -189,7 +189,7 @@ int main(int argc, char *argv[])
 		k_axis.push_back(static_cast<float>(k));
 	}
 
-	std::cout << "Value of auto-correlation coefficient R[10] is: " << R[10] << std::endl;
+	std::cout << "Value of auto-correlation coefficient R[10] is: " << R[50 + 10] << std::endl;
 
 	const char* r_file = "auto_correlation.csv";
 	CSV<float>({ { "k", k_axis },{ "R[k]", R } }).Save(r_file);
@@ -198,7 +198,32 @@ int main(int argc, char *argv[])
 	// Compute joint probability density function p(x1, x2, 10)
 	std::cout << "Computing joint probability density function..." << std::endl;
 	float div_size = 1.0f / 64.0f;
+	float div_area = div_size * div_size;
 	std::vector<std::vector<float>> jpdf = JointProbabilityDensity(signal, signal, 10, div_size);
+
+	// Check joint probabiliry density by integration
+	float integration = 0.0;
+	for (int x2 = 0; x2 < jpdf.size(); x2++) {
+		for (int x1 = 0; x1 < jpdf[x2].size(); x1++) {
+			integration += jpdf[x2][x1] * div_area;
+		}
+	}
+	std::cout << "Integration of joint probabiliry density is: " << integration << std::endl;
+
+	// Compute R[10] from joint probabiliry density function
+	float R10 = 0.0f;
+
+	float v_x2 = -1.0f;
+	for (int x2 = 0; x2 < jpdf.size(); x2++, v_x2 += div_size) {
+		float v_x1 = -1.0f;
+		for (int x1 = 0; x1 < jpdf[x2].size(); x1++, v_x1 += div_size) {
+			R10 += v_x1 * v_x2 * jpdf[x2][x1] * div_area;
+		}
+	}
+
+	std::cout << "Value of R[10] computed from joint probability density is: " << R10 << std::endl;
+
+	// Export joint probabiliry density
 	std::vector<float> x1_axis, x2_axis, z_axis;
 
 	float val_x2 = -1.0f;
@@ -211,30 +236,9 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	// Export joint probabiliry density
 	const char* jpdf_file = "joint_probability_density.csv";
 	CSV<float>({ { "x1", x1_axis },{ "x2", x2_axis },{ "density", z_axis } }).Save(jpdf_file);
 	std::cout << "Joint probabiliry density function is exported to '" << jpdf_file << "'" << std::endl << std::endl;
-
-	// Check joint probabiliry density by integration
-	float div_area = div_size * div_size;
-	float integration = 0.0;
-	for (int x2 = 0; x2 < jpdf.size(); x2++) {
-		for (int x1 = 0; x1 < jpdf[x2].size(); x1++) {
-			integration += jpdf[x2][x1] * div_area;
-		}
-	}
-	std::cout << "Integration of joint probabiliry density is: " << integration << std::endl << std::endl;
-
-	/*// Compute R[10] from joint probabiliry density function
-	div_area = div_size * div_size;
-	float R10 = 0.0f;
-	for (int x2 = 0; x2 < jpdf.size(); x2++) {
-		for (int x1 = 0; x1 < jpdf[x2].size(); x1++) {
-			R10 += jpdf[x2][x1] * div_area;
-		}
-	}
-	std::cout << "Integration of joint probabiliry density is: " << integration << std::endl << std::endl;*/
 
 	return 0;
 }
