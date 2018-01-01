@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 	WAV signal;
 	signal.Load(argv[1]);
 	std::cout << "Analyzing signal: " << argv[1] << std::endl << std::endl;
-	/*
+	
 	// Extract information
 	std::cout << "Sampling frequency: " << signal.SamplingFrequency() << "[Hz]" << std::endl;
 	std::cout << "Length: " << static_cast<float>(signal.Samples()) / signal.SamplingFrequency() << "[s]" << std::endl;
@@ -180,7 +180,7 @@ int main(int argc, char *argv[])
 
 	float sqr_signal_time = static_cast<float>(max_abs_val_sample) / static_cast<float>(filtered_fir_signal.size());
 	std::cout << "4kHz square signal found at: " << sqr_signal_time << "[s], " << max_abs_val_sample << "[samples]" << std::endl << std::endl;
-	*/
+	
 	// Compute biased auto-correlation coefficients from -50 to 50
 	std::cout << "Computing auto-correlation..." << std::endl;
 	std::vector<float>R = BiasedAutoCorrelation(signal, -50, 50);
@@ -197,22 +197,44 @@ int main(int argc, char *argv[])
 
 	// Compute joint probability density function p(x1, x2, 10)
 	std::cout << "Computing joint probability density function..." << std::endl;
-	float div_size = 0.01;
+	float div_size = 1.0f / 64.0f;
 	std::vector<std::vector<float>> jpdf = JointProbabilityDensity(signal, signal, 10, div_size);
-	std::vector<float> x_axis, y_axis;
+	std::vector<float> x1_axis, x2_axis, z_axis;
 
-	for (float val = -1.0f, int x = 0; x < jpdf.size(); x++, val += div_size) {
-		x_axis.push_back(val);	
-	}
-	if (jpdf.size() > 0) {
-		for (float val = -1.0f, int y = 0; y < jpdf[0].size(); y++, val += div_size) {
-			y_axis.push_back(val);
+	float val_x2 = -1.0f;
+	for (int x2 = 0; x2 < jpdf.size(); x2++, val_x2 += div_size) {
+		float val_x1 = -1.0f;
+		for (int x1 = 0; x1 < jpdf[x2].size(); x1++, val_x1 += div_size) {
+			x1_axis.push_back(val_x1);
+			x2_axis.push_back(val_x2);
+			z_axis.push_back(jpdf[x2][x1]);
 		}
 	}
 
-	//const char* jpdf_file = "joint_probability_density.csv";
-	//CSV<float>({ { "x", x_axis },{ "y", y_axis },{ "p(x1, x2, 10)", jpdf } }).Save(jpdf_file);
-	//std::cout << "Auto-correlation coefficients are exported to '" << r_file << "'" << std::endl << std::endl;
+	// Export joint probabiliry density
+	const char* jpdf_file = "joint_probability_density.csv";
+	CSV<float>({ { "x1", x1_axis },{ "x2", x2_axis },{ "density", z_axis } }).Save(jpdf_file);
+	std::cout << "Joint probabiliry density function is exported to '" << jpdf_file << "'" << std::endl << std::endl;
+
+	// Check joint probabiliry density by integration
+	float div_area = div_size * div_size;
+	float integration = 0.0;
+	for (int x2 = 0; x2 < jpdf.size(); x2++) {
+		for (int x1 = 0; x1 < jpdf[x2].size(); x1++) {
+			integration += jpdf[x2][x1] * div_area;
+		}
+	}
+	std::cout << "Integration of joint probabiliry density is: " << integration << std::endl << std::endl;
+
+	/*// Compute R[10] from joint probabiliry density function
+	div_area = div_size * div_size;
+	float R10 = 0.0f;
+	for (int x2 = 0; x2 < jpdf.size(); x2++) {
+		for (int x1 = 0; x1 < jpdf[x2].size(); x1++) {
+			R10 += jpdf[x2][x1] * div_area;
+		}
+	}
+	std::cout << "Integration of joint probabiliry density is: " << integration << std::endl << std::endl;*/
 
 	return 0;
 }
