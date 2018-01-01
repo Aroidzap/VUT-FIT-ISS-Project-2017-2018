@@ -12,7 +12,7 @@ std::vector<double> Filter::Convolve(std::vector<double> signal)
 	int a_coef_size = static_cast<int>(a_coef.size());
 
 	for (int i = 0; i < signal_size; i++) {
-		double sum = 0.0f;
+		double sum = 0.0;
 		for (int n = b_coef_size - 1; n >= 0; n--) {
 			int idx = i - n;
 			if (idx >= 0) {

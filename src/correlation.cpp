@@ -16,7 +16,7 @@ std::vector<double> BiasedAutoCorrelation(std::vector<double> x, int k_min, int 
 
 	for (int k = k_min; k <= k_max; k++) {
 		int abs_k = k < 0 ? -k : k;
-		double sum = 0.0f;
+		double sum = 0.0;
 		for (int n = 0; n < N - abs_k; n++) {
 			sum += x[n] * x[n + abs_k];
 		}
@@ -33,10 +33,10 @@ std::vector<std::vector<double>> JointProbabilityDensity(std::vector<double> x1,
 	if (k > min_size) { return joint_prob_density; }
 	size_t N = k < 0 ? min_size + k : min_size - k;
 
-	for (double x2i = -1.0; x2i < 1.0f; x2i += div_size) {
+	for (double x2i = -1.0; x2i < 1.0; x2i += div_size) {
 		std::vector<double> prob_density;
-		for (double x1i = -1.0; x1i < 1.0f; x1i += div_size) {
-			double probability = 0.0f;
+		for (double x1i = -1.0; x1i < 1.0; x1i += div_size) {
+			double probability = 0.0;
 			for (size_t n = 0; n < N; n++) {
 				double x1v, x2v;
 				if (k >= 0) {
@@ -49,7 +49,7 @@ std::vector<std::vector<double>> JointProbabilityDensity(std::vector<double> x1,
 				}
 				if ((x1v >= x1i) && (x1v < x1i + div_size) &&
 					(x2v >= x2i) && (x2v < x2i + div_size)) {
-					probability += 1.0f;
+					probability += 1.0;
 				}
 			}
 			probability /= static_cast<double>(N);

@@ -2,7 +2,7 @@
 #include <math.h>
 
 complex::complex() : re(), im() {}
-complex::complex(double re) : re(re), im(0.0f) {}
+complex::complex(double re) : re(re), im(0.0) {}
 complex::complex(double re, double im) : re(re), im(im) {}
 
 double complex::modulus()

@@ -62,7 +62,7 @@ bool WAV::Load(const std::string filename)
 
 	this->data.reserve(this->samples);
 	for (unsigned int i = 0; i < this->samples; i++) {
-		this->data.push_back(static_cast<double>(raw_data[i]) / 32768.0f);
+		this->data.push_back(static_cast<double>(raw_data[i]) / 32768.0);
 	}
 
 	delete[] raw_data;
@@ -90,7 +90,7 @@ bool WAV::Save(const std::string filename)
 	int16_t *raw_data = new int16_t[this->samples];
 	for (unsigned int i = 0; i < this->samples; i++) {
 		// NOTE: denormalizing by lower value compared to value used for normalizing when loading WAV file to avoid overflow;
-		raw_data[i] = static_cast<int16_t>(data[i] * 32767.0f);
+		raw_data[i] = static_cast<int16_t>(data[i] * 32767.0);
 	}
 	file.write(reinterpret_cast<char *>(raw_data), this->header.sizeOfData);
 
