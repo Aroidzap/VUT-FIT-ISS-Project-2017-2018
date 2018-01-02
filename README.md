@@ -2,7 +2,7 @@ VUT FIT - ISS Project 2017/2018 (Signal Analysis)
 ================================
 - Discrete Fourier Transform (DFT)
 - Discrete Transfer Function
-- Biassed Auto Correlation
+- Biassed Auto-correlation
 - Joint Probability Density Function
 - FIR, IIR Filter
 - Reading, Exporting WAV
