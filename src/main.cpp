@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 	std::vector<double> dft_modulus, freq;
 	for (unsigned int k = 0; k < dft.size(); k++) {
 		dft_modulus.push_back(dft[k].modulus());
-		freq.push_back(0.5f*signal.SamplingFrequency()*k / dft.size());
+		freq.push_back(0.5*signal.SamplingFrequency()*k / dft.size());
 	}
 
 	// Find max DFT modulus frequency
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 		}
 	}
 	double perc1 = static_cast<double>(max_dft_modulus_idx) / static_cast<double>(dft_modulus.size());
-	double max_dft_modulus_freq = perc1 * signal.SamplingFrequency() / 2.0f;
+	double max_dft_modulus_freq = perc1 * signal.SamplingFrequency() / 2.0;
 
 	std::cout << "Max of DFT modulus is at frequency: " << max_dft_modulus_freq << "[Hz]" << std::endl;
 
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 
 	// Create Discrete Transfer Function H(e^jw) of IIR filter
 	std::cout << "Computing H(e^jw)..." << std::endl;
-	double b0 = 0.2324f, b1 = -0.4112f, b2 = 0.2324f, a1 = 0.2289f, a2 = 0.4662f;
+	double b0 = 0.2324, b1 = -0.4112, b2 = 0.2324, a1 = 0.2289, a2 = 0.4662;
 	complex n0, n1, p0, p1;
 
 	DTF H(b0, b1, b2, a1, a2);
@@ -67,8 +67,8 @@ int main(int argc, char *argv[])
 
 	// Export poles and zeroes
 	std::vector<complex> zeroes({ n0, n1 }), poles({ p0, p1 }), unit_circle;
-	for (double i = 0.0f; i < 1.0f; i += 0.002f) {
-		unit_circle.push_back(e_to_j(PI * 2.0f * i));
+	for (double i = 0.0; i < 1.0; i += 0.002) {
+		unit_circle.push_back(e_to_j(PI * 2.0 * i));
 	}
 	const char* h_zp_file = "h_zeroes_poles.csv";
 	CSV<double>({	{ "Unit Circle [Re]", Re(unit_circle) },
@@ -82,8 +82,8 @@ int main(int argc, char *argv[])
 
 	// Export modulus of H(e^jw) of IIR filter to file
 	std::vector<double> iir_dtf_modulus, iir_dtf_freq;
-	for (double i = 0.0f; i < 0.5f; i += 0.002f) {
-		iir_dtf_modulus.push_back(H(e_to_j(PI * 2.0f * i)).modulus());
+	for (double i = 0.0; i < 0.5; i += 0.002) {
+		iir_dtf_modulus.push_back(H(e_to_j(PI * 2.0 * i)).modulus());
 		iir_dtf_freq.push_back(i * signal.SamplingFrequency());
 	}
 
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
 	std::vector<double> dft_modulus_filtered, freq_filtered;
 	for (unsigned int k = 0; k < dft_filtered.size(); k++) {
 		dft_modulus_filtered.push_back(dft_filtered[k].modulus());
-		freq_filtered.push_back(0.5f*signal.SamplingFrequency()*k / dft_filtered.size());
+		freq_filtered.push_back(0.5*signal.SamplingFrequency()*k / dft_filtered.size());
 	}
 
 	// Find max DFT modulus frequency of IIR filtered signal
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
 		}
 	}
 	double perc2 = static_cast<double>(max_dft_modulus_filtered_idx) / static_cast<double>(dft_modulus_filtered.size());
-	double max_dft_modulus_filtered_freq = perc2 * signal.SamplingFrequency() / 2.0f;
+	double max_dft_modulus_filtered_freq = perc2 * signal.SamplingFrequency() / 2.0;
 
 	std::cout << "Max of DFT modulus of IIR filtered signal is at frequency: " << max_dft_modulus_filtered_freq << "[Hz]" << std::endl;
 
@@ -139,8 +139,8 @@ int main(int argc, char *argv[])
 	// Create FIR filter
 	std::cout << "Filtering signal using FIR filter..." << std::endl;
 
-	double fir_frequency = 4000.0f; // 4kHz
-	double fir_time = 0.020f; // 20ms
+	double fir_frequency = 4000.0; // 4kHz
+	double fir_time = 0.020; // 20ms
 
 	std::vector<double> fir_coefs;
 	size_t fir_period_count = static_cast<size_t>(signal.SamplingFrequency() / fir_frequency);
@@ -148,10 +148,10 @@ int main(int argc, char *argv[])
 	fir_coefs.resize(fir_coef_count);
 	for (size_t i = 0; i < fir_coef_count; i++) {
 		if (i % fir_period_count < fir_period_count / 2) {
-			fir_coefs[i] = 1.0f / static_cast<double>(fir_coef_count);
+			fir_coefs[i] = 1.0 / static_cast<double>(fir_coef_count);
 		}
 		else {
-			fir_coefs[i] = - 1.0f / static_cast<double>(fir_coef_count);
+			fir_coefs[i] = - 1.0 / static_cast<double>(fir_coef_count);
 		}
 	}
 	Filter fir({ fir_coefs });
@@ -197,7 +197,7 @@ int main(int argc, char *argv[])
 
 	// Compute joint probability density function p(x1, x2, 10)
 	std::cout << "Computing joint probability density function..." << std::endl;
-	double div_size = 1.0f / 64.0f;
+	double div_size = 1.0 / 64.0;
 	double div_area = div_size * div_size;
 	std::vector<std::vector<double>> jpdf = JointProbabilityDensity(signal, signal, 10, div_size);
 
@@ -211,11 +211,11 @@ int main(int argc, char *argv[])
 	std::cout << "Integration of joint probabiliry density is: " << integration << std::endl;
 
 	// Compute R[10] from joint probabiliry density function
-	double R10 = 0.0f;
+	double R10 = 0.0;
 
-	double v_x2 = -1.0f;
+	double v_x2 = -1.0;
 	for (int x2 = 0; x2 < jpdf.size(); x2++, v_x2 += div_size) {
-		double v_x1 = -1.0f;
+		double v_x1 = -1.0;
 		for (int x1 = 0; x1 < jpdf[x2].size(); x1++, v_x1 += div_size) {
 			R10 += v_x1 * v_x2 * jpdf[x2][x1] * div_area;
 		}
@@ -226,9 +226,9 @@ int main(int argc, char *argv[])
 	// Export joint probabiliry density
 	std::vector<double> x1_axis, x2_axis, z_axis;
 
-	double val_x2 = -1.0f;
+	double val_x2 = -1.0;
 	for (int x2 = 0; x2 < jpdf.size(); x2++, val_x2 += div_size) {
-		double val_x1 = -1.0f;
+		double val_x1 = -1.0;
 		for (int x1 = 0; x1 < jpdf[x2].size(); x1++, val_x1 += div_size) {
 			x1_axis.push_back(val_x1);
 			x2_axis.push_back(val_x2);
