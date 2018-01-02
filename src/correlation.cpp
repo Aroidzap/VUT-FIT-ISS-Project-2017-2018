@@ -1,4 +1,5 @@
 #include "correlation.h"
+#include <cstddef>
 
 std::vector<double> BiasedAutoCorrelation(std::vector<double> x, int k_min, int k_max)
 {

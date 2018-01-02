@@ -154,7 +154,7 @@ int main(int argc, char *argv[])
 			fir_coefs[i] = - 1.0 / static_cast<double>(fir_coef_count);
 		}
 	}
-	Filter fir({ fir_coefs });
+	Filter fir(fir_coefs);
 
 	// Filter signal with FIR filter
 	std::vector<double> filtered_fir_signal = fir.Convolve(signal);
