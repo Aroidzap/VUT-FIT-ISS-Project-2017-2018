@@ -178,8 +178,12 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	double sqr_signal_time = static_cast<double>(max_abs_val_sample) / static_cast<double>(filtered_fir_signal.size());
-	std::cout << "4kHz square signal found at: " << sqr_signal_time << "[s], " << max_abs_val_sample << "[samples]" << std::endl << std::endl;
+	double signal_time = fir_time;
+	double signal_sample_cnt = signal_time * signal.SamplingFrequency();
+	double sqr_signal_time_end = static_cast<double>(max_abs_val_sample) / static_cast<double>(filtered_fir_signal.size());
+
+	std::cout << "4kHz square signal found at: " << sqr_signal_time_end - signal_time << "-" << sqr_signal_time_end << "[s], ";
+	std::cout << max_abs_val_sample - signal_sample_cnt << "-" << max_abs_val_sample << "[samples]" << std::endl << std::endl;
 	
 	// Compute biased auto-correlation coefficients from -50 to 50
 	std::cout << "Computing auto-correlation..." << std::endl;
@@ -217,7 +221,7 @@ int main(int argc, char *argv[])
 	for (int x2 = 0; x2 < jpdf.size(); x2++, v_x2 += div_size) {
 		double v_x1 = -1.0;
 		for (int x1 = 0; x1 < jpdf[x2].size(); x1++, v_x1 += div_size) {
-			R10 += v_x1 * v_x2 * jpdf[x2][x1] * div_area;
+			R10 += (v_x1 + div_size / 2.0) * (v_x2 + div_size / 2.0) * jpdf[x2][x1] * div_area;
 		}
 	}
 
